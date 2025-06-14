@@ -30,7 +30,7 @@ function RegisterPage() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box', backgroundColor: '#f2f3ee', color: '#333', borderRadius: '8px' }}
                     />
                 </div>
                 <div style={{ marginBottom: '15px' }}>
@@ -41,7 +41,7 @@ function RegisterPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box', backgroundColor: '#f2f3ee', color: '#333', borderRadius: '8px' }}
                     />
                 </div>
                 <div style={{ marginBottom: '15px' }}>
@@ -53,11 +53,11 @@ function RegisterPage() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         minLength="6"
-                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box', backgroundColor: '#f2f3ee', color: '#333', borderRadius: '8px' }}
                     />
                 </div>
                 {authError && <p style={{ color: 'red' }}>{authError}</p>}
-                <button type="submit" style={{ padding: '10px 15px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>
+                <button type="submit" style={{ padding: '10px 15px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
                     Kayıt Ol
                 </button>
             </form>

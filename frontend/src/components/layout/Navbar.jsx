@@ -48,18 +48,21 @@ function Navbar() {
     };
 
     const navStyle = {
-        background: '#333',
+        background: 'rgba(245, 92, 46, 0.87)', 
         color: '#fff',
+
         padding: '10px 20px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        borderRadius: '8px',
     };
 
     const linkStyle = {
         color: '#fff',
         textDecoration: 'none',
         margin: '0 10px',
+        fontWeight: 'bold',
     };
 
     const buttonStyle = {
@@ -98,6 +101,9 @@ function Navbar() {
                         </Link>
                         <span style={{ marginRight: '15px' }}>Merhaba, {user?.name}</span>
                         <Link to="/profile" style={linkStyle}>Profilim</Link>
+                        {user?.role === 'admin' && (
+                            <Link to="/admin" style={linkStyle}>Admin Paneli</Link>
+                        )}
                         <button onClick={handleLogout} style={buttonStyle}>Çıkış Yap</button>
                     </>
                 ) : (

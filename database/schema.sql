@@ -77,6 +77,6 @@ INSERT OR IGNORE INTO categories (name) VALUES ('Giyim');
 
 -- Örnek Ürünler (İsteğe Bağlı - Geliştirme için)
 INSERT OR IGNORE INTO products (name, description, price, category_id, stock, image_url) VALUES
-('Akıllı Telefon X', 'En yeni model akıllı telefon', 2999.99, (SELECT id from categories WHERE name = 'Elektronik'), 50, 'https://via.placeholder.com/150/0000FF/808080?Text=TelefonX'),
-('Yazılım Sanatı', 'Harika bir programlama kitabı', 79.50, (SELECT id from categories WHERE name = 'Kitap'), 120, 'https://via.placeholder.com/150/FF0000/FFFFFF?Text=Kitap1'),
-('Pamuklu Tişört', 'Rahat ve şık pamuklu tişört', 49.90, (SELECT id from categories WHERE name = 'Giyim'), 200, 'https://via.placeholder.com/150/00FF00/000000?Text=Tshirt');
+('Akıllı Telefon X', 'En yeni model akıllı telefon', 2999.99, (SELECT id from categories WHERE name = 'Elektronik'), 50, "/elegant-smartphone-composition.jpg"),
+('Yazılım Sanatı', 'Harika bir programlama kitabı', 79.50, (SELECT id from categories WHERE name = 'Kitap'), 120, "/education-concept-with-book.jpg"),
+('Pamuklu Tişört', 'Rahat ve şık pamuklu tişört', 49.90, (SELECT id from categories WHERE name = 'Giyim'), 200, "/simple-black-t-shirt-worn-by-man.jpg");

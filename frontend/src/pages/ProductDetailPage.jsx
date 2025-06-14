@@ -119,7 +119,7 @@ function ProductDetailPage() {
             <div style={styles.productLayout}>
                 <div style={styles.imageContainer}>
                     <img 
-                        src={product.image_url || 'https://via.placeholder.com/400?text=No+Image'} 
+                        src={product.image_url} 
                         alt={product.name} 
                         style={styles.productImage}
                     />

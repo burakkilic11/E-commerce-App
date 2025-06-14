@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 5001; // .env'den PORT al veya varsayılan 5001
 const categoryRoutes = require('./routes/categoryRoutes'); // Category rotalarını import et
 const productRoutes = require('./routes/productRoutes');   // Product rotalarını import et
 const cartRoutes = require('./routes/cartRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Middleware'ler
 app.use(cors()); // CORS'u etkinleştir
@@ -27,6 +28,7 @@ app.use('/api/auth', authRoutes); // Auth rotalarını /api/auth altında kullan
 app.use('/api/categories', categoryRoutes); // Category rotalarını /api/categories altında kullanıma aç
 app.use('/api/products', productRoutes);     // Product rotalarını /api/products altında kullanıma aç
 app.use('/api/cart', cartRoutes);     // Cart rotalarını /api/cart altında kullanıma aç
+app.use('/api/admin', adminRoutes); // Admin rotalarını /api/admin altında kullanıma aç
 
 // Temel bir health check endpoint'i
 app.get('/api/health', (req, res) => {
