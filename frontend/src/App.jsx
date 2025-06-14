@@ -9,6 +9,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import ProductDetailPage from './pages/ProductDetailPage'; // ProductDetailPage'i import et
 import './App.css';
 import CartPage from './pages/CartPage'; // CartPage'i import et
+import AdminPanel from './pages/AdminPanel';
 
 function App() {
     return (
@@ -29,6 +30,10 @@ function App() {
                     <Route element={<ProtectedRoute />}>
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/cart" element={<CartPage />} /> {/* Yeni Korumalı Rota */}
+                        {/** Sadece admin kullanıcılar için */}
+                        <Route path="/admin" element={
+                            <AdminPanel />
+                        } />
                     </Route>
 
                     <Route path="*" element={<div style={{textAlign: 'center'}}><h1>404 - Sayfa Bulunamadı</h1></div>} />

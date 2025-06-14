@@ -21,10 +21,10 @@ router.post('/', addItemToCart);
 // PUT /api/cart/:cartItemId - Sepetteki bir ürünün miktarını güncelle
 router.put('/:cartItemId', updateCartItemQuantity);
 
+// DELETE /api/cart/clear - Kullanıcının sepetini temizle
+router.delete('/clear', clearCart);
+
 // DELETE /api/cart/:cartItemId - Sepetten bir ürünü kaldır
 router.delete('/:cartItemId', removeCartItem);
-
-// DELETE /api/cart - Kullanıcının sepetini temizle
-router.delete('/clear', clearCart); // Veya router.delete('/', clearCart) de olabilirdi, ama /clear daha açıklayıcı
 
 module.exports = router;

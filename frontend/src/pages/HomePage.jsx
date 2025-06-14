@@ -98,9 +98,10 @@ function HomePage() {
     // Basit stiller (öncekiyle aynı, kopyalamıyorum, sizde mevcut)
     const styles = {
         container: { padding: '20px' },
-        welcomeMessage: { textAlign: 'center', marginBottom: '30px' },
+        welcomeMessage: { textAlign: 'center', marginBottom: '30px', color: "rgba(70, 66, 66, 0.87)", fontWeight: 'bold' },
         contentLayout: { display: 'flex', gap: '20px' },
         categoryList: { 
+            listStyleType: 'none',
             flex: '0 0 200px', 
             border: '1px solid #eee', 
             padding: '15px', 
@@ -110,12 +111,16 @@ function HomePage() {
         },
         categoryItem: {
             padding: '8px',
-            cursor: 'pointer',
+            cursor: '  pointer',
             borderRadius: '4px',
             marginBottom: '5px',
+            color: 'black',
+            border: '1px solid ', 
+            borderColor: 'rgba(128, 130, 138, 0.87)', // Daha belirgin bir renk
         },
         categoryItemSelected: {
-            backgroundColor: '#007bff',
+            background: 'rgba(245, 92, 46, 0.87)', // Daha belirgin bir renk
+            fontWeight: 'bold',
             color: 'white',
         },
         productList: { 
@@ -126,10 +131,11 @@ function HomePage() {
         },
         productCard: {
             border: '1px solid #ddd',
-            borderRadius: '5px',
+            borderRadius: '8px',
             padding: '15px',
             textAlign: 'center',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            backgroundColor: 'rgba(238, 241, 243, 0.9)', // Daha açık bir arka plan rengi
+            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
             display: 'flex', // Kart içeriğini dikeyde hizalamak için
             flexDirection: 'column', // Dikeyde sırala
             justifyContent: 'space-between' // İçeriği dağıt (isim/fiyat yukarı, butonlar aşağı)
@@ -139,12 +145,14 @@ function HomePage() {
             height: '150px',
             objectFit: 'contain', 
             marginBottom: '10px',
+            borderRadius: '8px', // Görsel köşelerini yuvarlamak için
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)' // Görsel için hafif gölge
         },
         productInfo: { // İsim ve fiyatı gruplamak için
             flexGrow: 1, // Butonlar aşağıda kalsın diye
         },
         productName: { fontSize: '1.1em', fontWeight: 'bold', margin: '10px 0 5px 0' },
-        productPrice: { fontSize: '1em', color: '#28a745', marginBottom: '10px' },
+        productPrice: { fontSize: '1em', color: '#000000', marginBottom: '10px',fontWeight: 'bold' },
         productActions: { // Butonları ve feedback'i gruplamak için
             marginTop: 'auto', // Butonları kartın en altına it
         },
@@ -183,7 +191,7 @@ function HomePage() {
             padding: '8px 12px',
             border: '1px solid #ddd',
             cursor: 'pointer',
-            backgroundColor: '#f8f9fa'
+            backgroundColor: 'rgba(143, 148, 182, 0.87)', // Daha belirgin bir renk
         },
         pageButtonDisabled: {
             cursor: 'not-allowed',
@@ -225,7 +233,8 @@ function HomePage() {
                 <aside style={styles.categoryList}>
                     <h3>Kategoriler</h3>
                     {loadingCategories ? <p>Yükleniyor...</p> : (
-                        <ul>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
+
                             <li 
                                 style={{
                                     ...styles.categoryItem, 
@@ -260,7 +269,7 @@ function HomePage() {
                                     {products.map(product => (
                                         <div key={product.id} style={styles.productCard}>
                                             <img 
-                                                src={product.image_url || 'https://via.placeholder.com/150?text=No+Image'} 
+                                                src={product.image_url} 
                                                 alt={product.name} 
                                                 style={styles.productImage} 
                                             />

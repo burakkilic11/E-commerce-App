@@ -119,7 +119,7 @@ function CartPage() {
             <h2>Sepetim ({cart.items.reduce((acc, item) => acc + item.quantity, 0)} ürün)</h2>
             {cart.items.map(item => (
                 <div key={item.cart_item_id} style={styles.cartItem}>
-                    <img src={item.image_url || 'https://via.placeholder.com/80'} alt={item.name} style={styles.itemImage} />
+                    <img src={item.image_url} alt={item.name} style={styles.itemImage} />
                     <div style={styles.itemDetails}>
                         <p style={styles.itemName}>{item.name}</p>
                         <p style={styles.itemPrice}>{item.price.toFixed(2)} TL</p>

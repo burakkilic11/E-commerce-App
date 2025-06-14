@@ -18,7 +18,7 @@ function LoginPage() {
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
+        <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
             <h2>Giriş Yap</h2>
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '15px' }}>
@@ -29,7 +29,7 @@ function LoginPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box', backgroundColor: '#f2f3ee', color: '#333', borderRadius: '8px' }}
                     />
                 </div>
                 <div style={{ marginBottom: '15px' }}>
@@ -40,11 +40,11 @@ function LoginPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box',backgroundColor: '#f2f3ee', color: '#333', borderRadius: '8px' }}
                     />
                 </div>
                 {authError && <p style={{ color: 'red' }}>{authError}</p>}
-                <button type="submit" style={{ padding: '10px 15px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>
+                <button type="submit" style={{ padding: '10px 15px', backgroundColor: 'rgba(143, 148, 182, 0.87)', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>
                     Giriş Yap
                 </button>
             </form>
