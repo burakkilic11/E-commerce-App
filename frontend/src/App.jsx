@@ -15,7 +15,7 @@ function App() {
     return (
         <>
             <Navbar />
-            <div className="container" style={{padding: '20px'}}>
+            <div className="container" style={{padding: '20px', paddingTop: '80px'}}>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<LoginPage />} />

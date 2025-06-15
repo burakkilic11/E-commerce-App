@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { getProfile as apiGetProfileData } from '../services/api'; // api.js'den import
+import { getProfile as apiGetProfileData, fetchMyOrders } from '../services/api';
 
 function ProfilePage() {
-    const { user: authContextUser, token, loading: authLoading } = useAuth(); // AuthContext'ten gelen kullanıcıyı alalım
+    const { user: authContextUser, token, loading: authLoading } = useAuth();
     const [profileData, setProfileData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         const fetchProfile = async () => {
-            if (token && !authLoading) { // Token varsa ve AuthContext yüklenmesi bittiyse
+            if (token && !authLoading) {
                 try {
                     const response = await apiGetProfileData();
                     setProfileData(response.data);
@@ -21,31 +22,40 @@ function ProfilePage() {
                 } finally {
                     setLoading(false);
                 }
-            } else if (!token && !authLoading) { // Token yoksa ve AuthContext yüklenmesi bittiyse
+            } else if (!token && !authLoading) {
                 setError('Lütfen giriş yapınız.');
                 setLoading(false);
             }
         };
 
-        if(!authLoading) { // AuthContext'in ilk yüklemesi bittikten sonra çalıştır
-           fetchProfile();
+        if (!authLoading) {
+            fetchProfile();
         }
+    }, [token, authLoading]);
 
-    }, [token, authLoading]); // Token veya authLoading değiştiğinde useEffect'i tekrar çalıştır
+    // Siparişleri yükle
+    useEffect(() => {
+        if (!authLoading && token) {
+            fetchMyOrders()
+                .then(res => setOrders(res.data))
+                .catch(() => setOrders([]));
+        }
+    }, [token, authLoading]);
 
-    if (authLoading || loading) {
+    // Yükleniyor takılmasını engelle: loading sadece profil yüklenirken true olmalı
+    if (authLoading) {
         return <div style={{padding: '20px', textAlign: 'center'}}>Yükleniyor...</div>;
     }
-
+    if (loading) {
+        return <div style={{padding: '20px', textAlign: 'center'}}>Yükleniyor...</div>;
+    }
     if (error) {
         return <div style={{padding: '20px', textAlign: 'center', color: 'red'}}>Hata: {error}</div>;
     }
-
-    if (!profileData && !authContextUser) { // Ne backend'den ne de context'ten kullanıcı bilgisi yoksa
+    if (!profileData && !authContextUser) {
         return <div style={{padding: '20px', textAlign: 'center'}}>Giriş yapmanız gerekmektedir.</div>;
     }
 
-    // Tercihen backend'den gelen taze veriyi kullan, yoksa context'tekini.
     const displayUser = profileData || authContextUser;
 
     return (
@@ -61,6 +71,31 @@ function ProfilePage() {
                 </>
             ) : (
                 <p>Kullanıcı bilgileri yüklenemedi.</p>
+            )}
+            <hr style={{margin: '30px 0'}} />
+            <h3>Siparişlerim</h3>
+            {orders.length === 0 ? (
+                <p>Henüz siparişiniz yok.</p>
+            ) : (
+                <ul>
+                    {orders.map(order => (
+                        <li key={order.id} style={{marginBottom: 16, border: '1px solid #eee', borderRadius: 6, padding: 10}}>
+                            <div><b>Sipariş No:</b> {order.id} <b>Tarih:</b> {new Date(order.created_at).toLocaleString()}</div>
+                            <div><b>Adres:</b> {order.shipping_address}</div>
+                            <div><b>Tutar:</b> {order.total_amount.toFixed(2)} TL</div>
+                            <div>
+                                <b>Ürünler:</b>
+                                <ul>
+                                    {order.items.map(item => (
+                                        <li key={item.product_id}>
+                                            {item.name} x {item.quantity} ({item.price_at_purchase.toFixed(2)} TL)
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
             )}
         </div>
     );

@@ -67,4 +67,12 @@ export const updateCartItemQuantityApi = (cartItemId, quantityData) => apiClient
 export const removeCartItemApi = (cartItemId) => apiClient.delete(`/cart/${cartItemId}`);
 export const clearCartApi = () => apiClient.delete('/cart/clear');
 
+// Order servis fonksiyonları (şemaya uygun)
+export const createOrderApi = (orderData) => apiClient.post('/orders', orderData); // orderData: { shipping_address }
+export const fetchMyOrders = () => apiClient.get('/orders/my');
+export const fetchAllOrders = () => apiClient.get('/orders');
+
+// Admin rapor servis fonksiyonu
+export const fetchAdminReports = () => apiClient.get('/admin/reports');
+
 export default apiClient; // İsterseniz direkt axios instance'ını da export edebilirsiniz
