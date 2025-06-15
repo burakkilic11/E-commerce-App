@@ -1,61 +1,38 @@
-import React, { useState, useEffect } from 'react'; 
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react'; 
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { getCart } from '../../services/api';
 
 function Navbar() {
-    const { isAuthenticated, logout, user, token } = useAuth(); // token eklendi
+    const { isAuthenticated, logout, user, cartItemCount, refreshCartItemCount } = useAuth();
     const navigate = useNavigate();
-    const [cartItemCount, setCartItemCount] = useState(0);
+    const location = useLocation();
 
+    // Sayfa değiştiğinde (özellikle /cart veya /) sepet sayısını güncelle
     useEffect(() => {
-        const fetchCartCount = async () => {
-            if (isAuthenticated() && token) { // Sadece giriş yapmış ve token'ı olan kullanıcılar için
-                try {
-                    const response = await getCart();
-                    const count = response.data.items.reduce((sum, item) => sum + item.quantity, 0);
-                    setCartItemCount(count);
-                } catch (error) {
-                    console.error("Navbar: Failed to fetch cart count", error);
-                    // Token geçersizse veya başka bir sorun varsa sayıyı 0 olarak bırakabiliriz
-                    // Veya kullanıcıyı logout yapabiliriz
-                    if (error.response && error.response.status === 401) {
-                        // Belki burada logout tetiklenebilir veya context'te ele alınabilir.
-                        // Şimdilik sadece sayıyı sıfırlayalım.
-                        setCartItemCount(0);
-                    }
-                }
-            } else {
-                setCartItemCount(0); // Kullanıcı giriş yapmamışsa sepet sayısı 0
-            }
-        };
-
-        fetchCartCount();
-        // Sepet güncellendiğinde bu sayının da güncellenmesi için daha gelişmiş bir state management (örn: CartContext)
-        // veya event bus mekanizması gerekebilir. Şimdilik periyodik veya navigasyonla güncellenecek.
-        // Veya sepeti etkileyen her işlemden sonra bu component'i yeniden render etmenin bir yolu bulunmalı.
-        // Basit bir çözüm: Sepet sayfası dışındaki her navigasyonda tekrar çekmek.
-        // Veya AuthContext'e cartItemCount'u ekleyip orada güncellemek.
-
-        // Token veya giriş durumu değiştiğinde tekrar çek
-    }, [isAuthenticated, token, navigate]); // navigate bağımlılıklara eklenebilir, sayfa değişimlerinde tetiklemek için.
-                                         // Ya da daha iyisi, global bir sepet state'i olduğunda o değiştiğinde tetiklenir.
+        if (isAuthenticated()) {
+            refreshCartItemCount();
+        }
+    // eslint-disable-next-line
+    }, [location.pathname, isAuthenticated]);
 
     const handleLogout = () => {
         logout();
-        setCartItemCount(0); // Logout olunca sepet sayısını sıfırla
         navigate('/login');
     };
 
     const navStyle = {
         background: 'rgba(245, 92, 46, 0.87)', 
         color: '#fff',
-
         padding: '10px 20px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderRadius: '8px',
+        position: 'fixed', // Sabit üstte tut
+        top: 0,
+        left: 0,
+        width: '100%',
+        zIndex: 1000,
+        boxSizing: 'border-box'
     };
 
     const linkStyle = {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom'; // useNavigate eklendi (opsiyonel yönlendirme için)
 import { fetchProductById } from '../services/api';
-import { useAuth } from '../contexts/AuthContext'; // AuthContext'i import et
+import { useAuth } from '../contexts/AuthContext';
 import { addItemToCartApi } from '../services/api'; // Sepete ekleme API'ını import et
 
 function ProductDetailPage() {
@@ -9,7 +9,7 @@ function ProductDetailPage() {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { isAuthenticated } = useAuth(); // Kullanıcının giriş yapıp yapmadığını kontrol et
+    const { isAuthenticated, refreshCartItemCount } = useAuth(); // refreshCartItemCount eklendi
     const [feedbackMessage, setFeedbackMessage] = useState(''); // Kullanıcıya geri bildirim için
     const navigate = useNavigate(); // Opsiyonel: Giriş yapmamışsa login'e yönlendirmek için
 
@@ -42,9 +42,9 @@ function ProductDetailPage() {
         if (product && product.stock > 0) {
             try {
                 setFeedbackMessage('Sepete ekleniyor...');
-                // productId'nin sayı olduğundan emin olalım (API bekliyorsa)
                 await addItemToCartApi({ productId: parseInt(productId), quantity: 1 });
                 setFeedbackMessage(`${product.name} sepete eklendi!`);
+                refreshCartItemCount(); // Sepet sayısını güncelle
                 // İsteğe bağlı: Sepet sayısını güncellemek için bir event yayınla veya context'i güncelle
                 // Örneğin, AuthContext'e bir refreshCartCount() fonksiyonu eklenip burada çağrılabilir.
             } catch (err) {

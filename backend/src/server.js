@@ -13,6 +13,7 @@ const categoryRoutes = require('./routes/categoryRoutes'); // Category rotaları
 const productRoutes = require('./routes/productRoutes');   // Product rotalarını import et
 const cartRoutes = require('./routes/cartRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const orderRoutes = require('./routes/orderRoutes'); // Sipariş rotalarını import et
 
 // Middleware'ler
 app.use(cors()); // CORS'u etkinleştir
@@ -29,6 +30,7 @@ app.use('/api/categories', categoryRoutes); // Category rotalarını /api/catego
 app.use('/api/products', productRoutes);     // Product rotalarını /api/products altında kullanıma aç
 app.use('/api/cart', cartRoutes);     // Cart rotalarını /api/cart altında kullanıma aç
 app.use('/api/admin', adminRoutes); // Admin rotalarını /api/admin altında kullanıma aç
+app.use('/api/orders', orderRoutes); // Sipariş rotalarını ekle
 
 // Temel bir health check endpoint'i
 app.get('/api/health', (req, res) => {

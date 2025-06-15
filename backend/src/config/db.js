@@ -38,6 +38,29 @@ function initializeDB() {
             }
         });
     });
+
+    // Siparişler için tabloyu oluştururken address alanı ekliyoruz
+    db.run(`
+        CREATE TABLE IF NOT EXISTS orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            address TEXT, -- Adres alanı
+            total_amount REAL NOT NULL,
+            created_at TEXT NOT NULL,
+            FOREIGN KEY(user_id) REFERENCES users(id)
+        )
+    `);
+    db.run(`
+        CREATE TABLE IF NOT EXISTS order_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id INTEGER NOT NULL,
+            product_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL,
+            price REAL NOT NULL,
+            FOREIGN KEY(order_id) REFERENCES orders(id),
+            FOREIGN KEY(product_id) REFERENCES products(id)
+        )
+    `);
 }
 
 // Promise tabanlı sorgu çalıştırma fonksiyonu (opsiyonel ama kullanışlı)

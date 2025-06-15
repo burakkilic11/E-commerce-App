@@ -4,7 +4,7 @@ import { fetchCategories, fetchProducts, addItemToCartApi } from '../services/ap
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate eklendi (opsiyonel)
 
 function HomePage() {
-    const { user, isAuthenticated } = useAuth(); // isAuthenticated artık useAuth'tan geliyor
+    const { user, isAuthenticated, refreshCartItemCount } = useAuth(); // refreshCartItemCount eklendi
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [loadingProducts, setLoadingProducts] = useState(true);
@@ -79,6 +79,7 @@ function HomePage() {
                 setCartFeedback(prev => ({ ...prev, [productToAdd.id]: 'Sepete ekleniyor...' }));
                 await addItemToCartApi({ productId: productToAdd.id, quantity: 1 });
                 setCartFeedback(prev => ({ ...prev, [productToAdd.id]: 'Sepete Eklendi!' }));
+                refreshCartItemCount(); // Sepet sayısını güncelle
                 // Geri bildirimi bir süre sonra temizle
                 setTimeout(() => {
                     setCartFeedback(prev => {
@@ -165,7 +166,7 @@ function HomePage() {
             marginRight: '5px', // Detay ve Sepete Ekle butonları arasına boşluk
         },
         detailsButton: { // Detay butonu için özel stil
-             backgroundColor: '#6c757d', // Gri tonu
+             backgroundColor: 'rgba(245, 92, 46, 0.87)', // Gri tonu
              color: 'white',
         },
         addToCartButton: { // Sepete Ekle butonu için özel stil
@@ -191,7 +192,7 @@ function HomePage() {
             padding: '8px 12px',
             border: '1px solid #ddd',
             cursor: 'pointer',
-            backgroundColor: 'rgba(143, 148, 182, 0.87)', // Daha belirgin bir renk
+            backgroundColor: 'rgba(245, 92, 46, 0.87)', // Daha belirgin bir renk
         },
         pageButtonDisabled: {
             cursor: 'not-allowed',

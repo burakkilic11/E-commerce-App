@@ -44,7 +44,7 @@ function LoginPage() {
                     />
                 </div>
                 {authError && <p style={{ color: 'red' }}>{authError}</p>}
-                <button type="submit" style={{ padding: '10px 15px', backgroundColor: 'rgba(143, 148, 182, 0.87)', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>
+                <button type="submit" style={{ padding: '10px 15px', backgroundColor: 'rgba(221, 102, 47, 0.88)', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>
                     Giriş Yap
                 </button>
             </form>

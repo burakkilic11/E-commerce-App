@@ -1,4 +1,4 @@
-const { all: dbAll, get: dbGet } = require('../config/db'); // db.js'den 'all' ve 'get' metodlarını al
+const { all: dbAll, get: dbGet, run: dbRun } = require('../config/db'); // db.js'den 'all', 'get' ve 'run' metodlarını al
 const logger = require('../utils/logger');
 
 // Tüm ürünleri listele (kategoriye göre filtreleme ve basit pagination ile)
@@ -76,7 +76,26 @@ const getProductById = async (req, res) => {
     }
 };
 
+// Yeni ürün ekle (sadece admin)
+const createProduct = async (req, res) => {
+    const { name, price, category_id, description, stock, image_url } = req.body;
+    if (!name || !price || !category_id || stock === undefined) {
+        return res.status(400).json({ message: 'Zorunlu alanlar eksik.' });
+    }
+    try {
+        const result = await dbRun(
+            `INSERT INTO products (name, price, category_id, description, stock, image_url) VALUES (?, ?, ?, ?, ?, ?)`,
+            [name, price, category_id, description || '', stock, image_url || '']
+        );
+        res.status(201).json({ message: 'Ürün başarıyla eklendi.', productId: result.id });
+    } catch (error) {
+        logger.error('Error creating product:', error);
+        res.status(500).json({ message: 'Ürün eklenirken bir hata oluştu.' });
+    }
+};
+
 module.exports = {
     getAllProducts,
     getProductById,
+    createProduct
 };

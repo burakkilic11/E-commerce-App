@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { register as apiRegister, login as apiLogin, getProfile as apiGetProfile } from '../services/api'; // api.js'den import
+import { register as apiRegister, login as apiLogin, getProfile as apiGetProfile, getCart } from '../services/api'; // getCart eklendi
 
 const AuthContext = createContext(null);
 
@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('authToken') || null);
     const [loading, setLoading] = useState(true); // Başlangıçta kullanıcı bilgilerini yükleme durumu
     const [authError, setAuthError] = useState(null); // Hata mesajlarını tutmak için
+    const [cartItemCount, setCartItemCount] = useState(0);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('authToken');
@@ -46,6 +47,30 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     }, []);
+
+    // Sepet ürün sayısını güncelleyen fonksiyon
+    const refreshCartItemCount = async () => {
+        if (!token) {
+            setCartItemCount(0);
+            return;
+        }
+        try {
+            const response = await getCart();
+            const count = response.data.items.reduce((sum, item) => sum + item.quantity, 0);
+            setCartItemCount(count);
+        } catch {
+            setCartItemCount(0);
+        }
+    };
+
+    // Kullanıcı veya token değiştiğinde sepet sayısını güncelle
+    useEffect(() => {
+        if (token) {
+            refreshCartItemCount();
+        } else {
+            setCartItemCount(0);
+        }
+    }, [token]);
 
     const login = async (email, password) => {
         setAuthError(null); // Önceki hataları temizle
@@ -87,8 +112,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('authUser');
         setAuthError(null);
-        // İsteğe bağlı: Kullanıcıyı ana sayfaya veya login sayfasına yönlendir
-        // navigate('/login'); // Eğer react-router-dom'dan useNavigate hook'u kullanılıyorsa
+        setCartItemCount(0); // Çıkışta sepet sayısını sıfırla
     };
 
     const isAuthenticated = () => {
@@ -96,7 +120,10 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, isAuthenticated, loading, authError, setAuthError }}>
+        <AuthContext.Provider value={{
+            user, token, login, register, logout, isAuthenticated, loading, authError, setAuthError,
+            cartItemCount, refreshCartItemCount // yeni eklenenler
+        }}>
             {children}
         </AuthContext.Provider>
     );
